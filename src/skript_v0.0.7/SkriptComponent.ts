@@ -52,32 +52,33 @@ export abstract class SkriptComponent {
     abstract get symbolKind(): SymbolKind;
 
 
-	public static create(skDocument: SkriptDocument, component:string): SkriptComponent | undefined {
-	    
-	    let range = skDocument.getRange(component);
-	    if (!range)
-	        return;
-	
-	    let search
-	    if (search = component.match(/^(?<component>(?<head>aliases)\:(.*)(?<body>((\r\n|\r|\n)([^a-zA-Z][^\r\n]*)?)+))/i)?.groups){
-	        return this._createAliases(skDocument, range, search.component, search.head, search.body);
-	
-	    } else if (search = component.match(/^(?<component>(?<head>options)\:(.*)(?<body>((\r\n|\r|\n)([^a-zA-Z][^\r\n]*)?)+))/i)?.groups) {
-	        return this._createOptions(skDocument, range, search.component, search.head, search.body);
-	        
-	    } else if (search = component.match(/^(?<component>(?<head>(async\s+)?(on|every)\s+([^\:]+)|at\s+(\d{1,2}\:\d{1,2}|[^\:]+))\:(.*)((\r\n|\r|\n)(?<body>((\W[^\r\n]*)?(\r\n|\r|\n)?)+))?)/i)?.groups) {
-	        return this._createEvent(skDocument, range, search.component, search.head, search.body);
-	        
-	    } else if (search = component.match(/^(?<component>(command\s?(?<head>[^\:]*))\:?(.*)(?<body>((\r\n|\r|\n)([^a-zA-Z][^\r\n]*)?)*))/i)?.groups) {
-	        return this._createCommand(skDocument, range, search.component, search.head, search.body);
-	        
-	    } else if (search = component.match(/^(?<component>(?<head>function\s(?:\w+)\((?:.*)\)(?:\s\:\:\s(?:[^:]+))?)\:(.*)((\r\n|\r|\n)(?<body>((\W[^\r\n]*)?(\r\n|\r|\n)?)+))?)/i)?.groups) {
-	        return this._createFunction(skDocument, range, search.component, search.head, search.body);
-	        
-	    }
-	    
-	    return;
-	}
+    public static create(skDocument: SkriptDocument, component:string): SkriptComponent | undefined {
+        
+        let range = skDocument.getRange(component);
+        if (!range)
+            return;
+
+        let search
+        if (search = component.match(/^(?<component>(?<head>aliases)\:(.*)(?<body>((\r\n|\r|\n)([^a-zA-Z][^\r\n]*)?)+))/i)?.groups){
+            return this._createAliases(skDocument, range, search.component, search.head, search.body);
+
+        } else if (search = component.match(/^(?<component>(?<head>options)\:(.*)(?<body>((\r\n|\r|\n)([^a-zA-Z][^\r\n]*)?)+))/i)?.groups) {
+            return this._createOptions(skDocument, range, search.component, search.head, search.body);
+            
+        } else if (search = component.match(/^(?<component>(?<head>(async|on|every)\s+([^\:]+)|at\s+(\d{1,2}\:\d{1,2}|[^\:]+))\:(.*)((\r\n|\r|\n)(?<body>((\W[^\r\n]*)?(\r\n|\r|\n)?)+))?)/i)?.groups) {
+            return this._createEvent(skDocument, range, search.component, search.head, search.body);
+            
+        } else if (search = component.match(/^(?<component>(command\s?(?<head>[^\:]*))\:?(.*)(?<body>((\r\n|\r|\n)([^a-zA-Z][^\r\n]*)?)*))/i)?.groups) {
+            return this._createCommand(skDocument, range, search.component, search.head, search.body);
+            
+        } else if (search = component.match(/^(?<component>(?<head>function\s(?:\w+)\((?:.*)\)(?:\s\:\:\s(?:[^:]+))?)\:(.*)((\r\n|\r|\n)(?<body>((\W[^\r\n]*)?(\r\n|\r|\n)?)+))?)/i)?.groups) {
+            return this._createFunction(skDocument, range, search.component, search.head, search.body);
+            
+        }
+        
+        return;
+
+    }
 
 
 
